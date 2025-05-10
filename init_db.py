@@ -1,23 +1,22 @@
 import sqlite3
-from werkzeug.security import generate_password_hash
 
-con = sqlite3.connect("users.db")
-cur = con.cursor()
+# Connect to SQLite DB (it will create users.db if not exists)
+conn = sqlite3.connect("users.db")
+cursor = conn.cursor()
 
-# Users table
-cur.execute("""
+# Create users table
+cursor.execute('''
 CREATE TABLE IF NOT EXISTS users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT UNIQUE NOT NULL,
+    username TEXT PRIMARY KEY,
     password_hash TEXT NOT NULL,
     failed_attempts INTEGER DEFAULT 0,
     last_failed_login TEXT,
     is_locked INTEGER DEFAULT 0
 )
-""")
+''')
 
-# Login logs table
-cur.execute("""
+# Create login_logs table
+cursor.execute('''
 CREATE TABLE IF NOT EXISTS login_logs (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT,
@@ -25,13 +24,13 @@ CREATE TABLE IF NOT EXISTS login_logs (
     timestamp TEXT,
     browser TEXT,
     device TEXT,
+    location TEXT,
     status TEXT
 )
-""")
+''')
 
-# Optional: Insert a test user
-cur.execute("INSERT OR IGNORE INTO users (username, password_hash) VALUES (?, ?)",
-            ("admin", generate_password_hash("admin123")))
+# Commit and close
+conn.commit()
+conn.close()
 
-con.commit()
-con.close()
+print("✅ Database setup completed successfully.")

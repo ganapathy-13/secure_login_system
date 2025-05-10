@@ -1,7 +1,11 @@
 secure_login_project/
+│
 ├── app.py
-├── users.db (SQLite database)
+├── users.db
 ├── templates/
-│   └── login.html
-|   |__ register.html
-└── requirements.txt
+│   ├── register.html
+│   ├── login.html
+│   ├── dashboard.html
+├── static/
+│   ├── style.css
+├── requirements.txt

@@ -1,6 +1,6 @@
-flask
-werkzeug
+Flask
+Werkzeug
 pytz
 requests
-beautifulsoup4
-lxml
+user-agents
+matplotlib
