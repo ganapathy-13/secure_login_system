@@ -1,44 +1,10 @@
-<!-- At the top: Pie chart summary -->
-<canvas id="anomalyChart" width="200" height="200"></canvas>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    const ctx = document.getElementById('anomalyChart');
-    new Chart(ctx, {
-        type: 'pie',
-        data: {
-            labels: ['Normal', 'Anomaly'],
-            datasets: [{
-                data: [{{ normal }}, {{ anomaly }}],
-                backgroundColor: ['#4caf50', '#f44336']
-            }]
-        }
-    });
-</script>
-
-<!-- Login logs table -->
-<table>
-  <thead>
-    <tr>
-      <th>Timestamp</th>
-      <th>User</th>
-      <th>IP</th>
-      <th>Location</th>
-      <th>Device</th>
-      <th>Browser</th>
-      <th>Status</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for log in logs %}
-    <tr style="background-color: {{ 'lightcoral' if log.status == 'Anomaly' else 'lightgreen' }};">
-      <td>{{ log.timestamp }}</td>
-      <td>{{ log.username }}</td>
-      <td>{{ log.ip }}</td>
-      <td>{{ log.location }}</td>
-      <td>{{ log.device }}</td>
-      <td>{{ log.browser }}</td>
-      <td>{{ log.status }}</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Monitoring Dashboard</title>
+</head>
+<body>
+    <h1>Login Monitoring Dashboard</h1>
+    <img src="{{ chart_url }}" alt="Login Status Donut Chart">
+</body>
+</html>

@@ -17,7 +17,7 @@ app.secret_key = 'supersecretkey'
 MAX_ATTEMPTS = 3
 LOCK_TIME_MINUTES = 30
 ALLOWED_START_HOUR = 9
-ALLOWED_END_HOUR = 17
+ALLOWED_END_HOUR = 20
 
 def send_alert_email(subject, message):
     try:
@@ -31,6 +31,25 @@ def send_alert_email(subject, message):
             server.send_message(msg)
     except Exception as e:
         print("Failed to send email:", e)
+
+
+def get_login_status_counts():
+    conn = sqlite3.connect('users.db')
+    cursor = conn.cursor()
+    
+    cursor.execute("""
+        SELECT status, COUNT(*) 
+        FROM login_logs 
+        GROUP BY status
+    """)
+    
+    rows = cursor.fetchall()
+    conn.close()
+
+    labels = [row[0].capitalize() for row in rows]
+    data = [row[1] for row in rows]
+    
+    return data, labels
 # ----------------- Utility Functions -----------------
 
 def get_user(username):
