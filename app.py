@@ -10,7 +10,7 @@ app = Flask(__name__)
 app.secret_key = 'supersecretkey'
 
 MAX_ATTEMPTS = 3
-LOCK_TIME_MINUTES = 5
+LOCK_TIME_MINUTES = 30
 ALLOWED_START_HOUR = 9
 ALLOWED_END_HOUR = 17
 
@@ -128,9 +128,11 @@ def login():
             last_attempt = datetime.fromisoformat(user['last_failed_login'])
             if datetime.now() - last_attempt < timedelta(minutes=LOCK_TIME_MINUTES):
                 log_login_attempt(username, ip, 'Locked Out', user_agent)
-                return "Account is locked. Try again later.", 403
+                return render_template('login.html', error="Account is locked. Try again after 30 minutes.")
+
             else:
                 reset_login_attempts(username)
+
 
         if check_password_hash(user['password_hash'], password):
             reset_login_attempts(username)
@@ -140,7 +142,7 @@ def login():
         else:
             increment_login_attempts(username)
             log_login_attempt(username, ip, 'Failed - Wrong Password', user_agent)
-            return "Invalid credentials.", 401
+            return render_template('login.html', error="Invalid credentials")
 
     log_login_attempt(username, ip, 'Failed - User Not Found', user_agent)
     return "User not found.", 404
