@@ -192,7 +192,7 @@ def login():
                 reset_login_attempts(username)
                 log_login_attempt(username, ip, 'Normal', user_agent)
                 session['user'] = username
-                return redirect('/dashboard')
+                return render_template('afterlogin.html')
             else:
                 increment_login_attempts(username)
                 remaining_attempts = MAX_ATTEMPTS - (user['failed_attempts'] + 1)
@@ -283,3 +283,4 @@ def admin():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
