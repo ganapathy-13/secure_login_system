@@ -1,4 +1,6 @@
 import sqlite3
+import os
+# Check if the database file exists
 
 
 # Connect to the SQLite database

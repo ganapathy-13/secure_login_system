@@ -9,7 +9,12 @@ from collections import defaultdict
 import os
 import smtplib
 from email.mime.text import MIMEText
-
+from dotenv import load_dotenv
+load_dotenv()
+ALERT_EMAIL = os.getenv("EMAIL_USER")
+EMAIL_PASSWORD = os.getenv("EMAIL_PASS")
+# ----------------- Configuration -----------------
+# Load environment variables
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
@@ -17,9 +22,14 @@ app.secret_key = 'supersecretkey'
 MAX_ATTEMPTS = 3
 LOCK_TIME_MINUTES = 30
 ALLOWED_START_HOUR = 9
-ALLOWED_END_HOUR = 20
+ALLOWED_END_HOUR = 17
 
+#----email alert settings------
 def send_alert_email(subject, message):
+    if not ALERT_EMAIL or not EMAIL_PASSWORD:
+        print("[Email Alert Error] Email credentials are not set properly.")
+        return
+
     try:
         msg = MIMEText(message)
         msg['Subject'] = subject
@@ -29,8 +39,11 @@ def send_alert_email(subject, message):
         with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
             server.login(ALERT_EMAIL, EMAIL_PASSWORD)
             server.send_message(msg)
+
+        print("[Email Alert] Sent successfully.")
     except Exception as e:
-        print("Failed to send email:", e)
+        print("[Email Alert Error]:", e)
+
 
 
 def get_login_status_counts():
