@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, session, jsonify
+from flask import Flask, request, render_template, redirect, session, jsonify,url_for
 import sqlite3
 from datetime import datetime, timedelta
 import pytz
@@ -165,7 +165,8 @@ def register():
         cur.execute("INSERT INTO users (username, password_hash) VALUES (?, ?)", (username, password_hash))
         con.commit()
         con.close()
-        return render_template('login.html', success="Registration successful. Please log in.")
+        # Redirect to the login route with a success message
+        return redirect(url_for('login', success="Registration successful. Please log in."))
     return render_template('register.html')
 
 @app.route('/login', methods=['GET', 'POST'])

@@ -20,7 +20,8 @@
         <h2>Register</h2>
         {% if message %}<p class="message">{{ message }}</p>{% endif %}
         {% if error %}<p class="error">{{ error }}</p>{% endif %}
-        <form method="POST">
+        <form method="POST" action="{{ url_for('register') }}">
+
             <label>Email:</label>
             <input type="email" name="username" required>
             <label>Password:</label>
